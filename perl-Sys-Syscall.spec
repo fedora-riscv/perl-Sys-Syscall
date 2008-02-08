@@ -1,8 +1,8 @@
 Name:           perl-Sys-Syscall
 Version:        0.22
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
-License:        GPL or Artistic
+License:        GPL+ or Artistic
 Group:          Development/Libraries
 URL:            http://search.cpan.org/dist/Sys-Syscall/
 Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Feb 08 2008 Tom "spot" Callaway <tcallawa@redhat.com> 0.22-3
+- rebuild for new perl
+
 * Thu May 08 2007 Ruben Kerkhof <ruben@rubenkerkhof.com> 0.22-2
 - Test::More added to BR (#239369)
 * Mon May 07 2007 Ruben Kerkhof <ruben@rubenkerkhof.com> 0.22-1
