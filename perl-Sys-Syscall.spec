@@ -1,6 +1,6 @@
 Name:           perl-Sys-Syscall
 Version:        0.22
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Mon Dec  7 2009 Stepan Kasal <skasal@redhat.com> - 0.22-6
+- rebuild against perl 5.10.1
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.22-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
