@@ -1,12 +1,13 @@
-Name:           perl-Sys-Syscall
-Version:        0.22
-Release:        7%{?dist}
+%global libname Sys-Syscall
+
+Name:           perl-%{libname}
+Version:        0.23
+Release:        1%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/Sys-Syscall/
-Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:            http://search.cpan.org/dist/%{libname}/
+Source0:        http://www.cpan.org/modules/by-module/Sys/%{libname}-%{version}.tar.gz
 BuildArch:      noarch
 
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -19,35 +20,37 @@ Use epoll, sendfile, from Perl. Mostly Linux-only support now, but more
 syscalls/OSes planned for future.
 
 %prep
-%setup -q -n Sys-Syscall-%{version}
+%setup -q -n %{libname}-%{version}
+pod2text < README.pod > README
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
+make pure_install PERL_INSTALL_ROOT=%{buildroot}
 
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+find %{buildroot} -type f -name .packlist -exec rm -f {} \;
+find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
+%{_fixperms} %{buildroot}/*
 
-%{_fixperms} $RPM_BUILD_ROOT/*
+rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm
+rm -v %{buildroot}%{perl_vendorlib}/Sys/README.pod
 
 %check
 make test
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(-,root,root,-)
-%doc CHANGES
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%doc CHANGES README
+%{perl_vendorlib}/Sys
+%{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Thu Jun 24 2010 Ruben Kerkhof <ruben@rubenkerkhof.com> 0.23-1
+- Upstream released new version
+
 * Thu May 06 2010 Marcela Maslanova <mmaslano@redhat.com> - 0.22-7
 - Mass rebuild with perl-5.12.0
 
