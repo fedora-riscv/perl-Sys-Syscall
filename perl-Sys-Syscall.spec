@@ -2,7 +2,7 @@
 
 Name:           perl-%{libname}
 Version:        0.23
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
@@ -48,6 +48,9 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Wed Dec 22 2010 Marcela Maslanova <mmaslano@redhat.com> - 0.23-2
+- 661697 rebuild for fixing problems with vendorach/lib
+
 * Thu Jun 24 2010 Ruben Kerkhof <ruben@rubenkerkhof.com> 0.23-1
 - Upstream released new version
 
