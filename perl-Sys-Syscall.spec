@@ -35,12 +35,6 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 
 %{_fixperms} $RPM_BUILD_ROOT/*
 
-rm -v $RPM_BUILD_ROOT%{_mandir}/man3/Sys::README.3pm
-rm -v $RPM_BUILD_ROOT%{perl_vendorlib}/Sys/README.pod
-
-%check
-make test
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
