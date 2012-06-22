@@ -1,13 +1,12 @@
-%global libname Sys-Syscall
-
-Name:           perl-%{libname}
+Name:           perl-Sys-Syscall
 Version:        0.23
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
-License:        GPL+ or Artistic
+License:        GPL or Artistic
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/%{libname}/
-Source0:        http://www.cpan.org/modules/by-module/Sys/%{libname}-%{version}.tar.gz
+URL:            http://search.cpan.org/dist/Sys-Syscall/
+Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -20,23 +19,30 @@ Use epoll, sendfile, from Perl. Mostly Linux-only support now, but more
 syscalls/OSes planned for future.
 
 %prep
-%setup -q -n %{libname}-%{version}
-pod2text < README.pod > README
+%setup -q -n Sys-Syscall-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
 
 %install
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
-find %{buildroot} -type f -name .packlist -exec rm -f {} \;
-find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
+make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 
-%{_fixperms} %{buildroot}/*
+find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
+find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 
-rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm
-rm -v %{buildroot}%{perl_vendorlib}/Sys/README.pod
+%{_fixperms} $RPM_BUILD_ROOT/*
+
+rm -v $RPM_BUILD_ROOT%{_mandir}/man3/Sys::README.3pm
+rm -v $RPM_BUILD_ROOT%{perl_vendorlib}/Sys/README.pod
+
+%check
+make test
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %check
 make test
@@ -48,7 +54,7 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
-* Fri Jun 22 2012 Luis Bazan <lbazan@fedoraproject.org> 0.23-2
+* Fri Jun 22 2012 Luis Bazan <lbazan@fedoraproject.org> 0.23-3
 - New Upstream Version
 
 * Thu May 08 2007 Ruben Kerkhof <ruben@rubenkerkhof.com> 0.22-2
