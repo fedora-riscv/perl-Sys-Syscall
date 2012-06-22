@@ -1,12 +1,13 @@
-Name:           perl-Sys-Syscall
+%global libname Sys-Syscall
+
+Name:           perl-%{libname}
 Version:        0.23
 Release:        1%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
-License:        GPL or Artistic
+License:        GPL+ or Artistic
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/Sys-Syscall/
-Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:            http://search.cpan.org/dist/%{libname}/
+Source0:        http://www.cpan.org/modules/by-module/Sys/%{libname}-%{version}.tar.gz
 BuildArch:      noarch
 
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -19,33 +20,32 @@ Use epoll, sendfile, from Perl. Mostly Linux-only support now, but more
 syscalls/OSes planned for future.
 
 %prep
-%setup -q -n Sys-Syscall-%{version}
+%setup -q -n %{libname}-%{version}
+pod2text < README.pod > README
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
+make pure_install PERL_INSTALL_ROOT=%{buildroot}
 
-make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
+find %{buildroot} -type f -name .packlist -exec rm -f {} \;
+find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
 
-find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
-find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
+%{_fixperms} %{buildroot}/*
 
-%{_fixperms} $RPM_BUILD_ROOT/*
+rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm
+rm -v %{buildroot}%{perl_vendorlib}/Sys/README.pod
 
 %check
 make test
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(-,root,root,-)
-%doc CHANGES
-%{perl_vendorlib}/*
-%{_mandir}/man3/*
+%doc CHANGES README
+%{perl_vendorlib}/Sys
+%{_mandir}/man3/Sys::Syscall.*
 
 %changelog
 * Fri Jun 22 2012 Luis Bazan <lbazan@fedoraproject.org> 0.23-1
