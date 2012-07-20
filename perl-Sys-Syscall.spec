@@ -2,7 +2,7 @@
 
 Name:           perl-%{libname}
 Version:        0.23
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
@@ -48,6 +48,9 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Fri Jul 20 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.23-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Fri Jun 08 2012 Petr Pisar <ppisar@redhat.com> - 0.23-6
 - Perl 5.16 rebuild
 
