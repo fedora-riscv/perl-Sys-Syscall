@@ -1,40 +1,37 @@
-%global libname Sys-Syscall
-
-Name:           perl-%{libname}
-Version:        0.23
-Release:        7%{?dist}
+Name:           perl-Sys-Syscall
+Version:        0.25
+Release:        1%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/%{libname}/
-Source0:        http://www.cpan.org/modules/by-module/Sys/%{libname}-%{version}.tar.gz
+URL:            http://search.cpan.org/dist/Sys-Syscall/
+Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
 BuildArch:      noarch
-
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-
-BuildRequires:  perl(Test::More)
+Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
+BuildRequires:  perl(constant)
+BuildRequires:  perl(Exporter)
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl(File::Temp)
+BuildRequires:  perl(IO::Socket::INET)
+BuildRequires:  perl(Socket)
+BuildRequires:  perl(Test::More)
 
 %description
 Use epoll, sendfile, from Perl. Mostly Linux-only support now, but more
 syscalls/OSes planned for future.
 
 %prep
-%setup -q -n %{libname}-%{version}
+%setup -q -n Sys-Syscall-%{version}
 pod2text < README.pod > README
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
+perl Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
 
 %install
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
-
+make pure_install DESTDIR=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} \;
-find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null \;
-
 %{_fixperms} %{buildroot}/*
-
 rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm
 rm -v %{buildroot}%{perl_vendorlib}/Sys/README.pod
 
@@ -42,12 +39,15 @@ rm -v %{buildroot}%{perl_vendorlib}/Sys/README.pod
 make test
 
 %files
-%defattr(-,root,root,-)
 %doc CHANGES README
 %{perl_vendorlib}/Sys
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Mon Dec 17 2012 Petr Šabata <contyk@redhat.com> - 0.25-1
+- 0.25 bump
+- Modernize the spec a bit
+
 * Fri Jul 20 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.23-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
