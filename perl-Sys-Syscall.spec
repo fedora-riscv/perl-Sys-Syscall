@@ -1,6 +1,6 @@
 Name:           perl-Sys-Syscall
 Version:        0.25
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
@@ -44,6 +44,9 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Wed Jun 03 2015 Jitka Plesnikova <jplesnik@redhat.com> - 0.25-7
+- Perl 5.22 rebuild
+
 * Wed Aug 27 2014 Jitka Plesnikova <jplesnik@redhat.com> - 0.25-6
 - Perl 5.20 rebuild
 
