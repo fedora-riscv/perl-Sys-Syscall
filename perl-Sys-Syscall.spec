@@ -38,7 +38,7 @@ make %{?_smp_mflags}
 %install
 make pure_install DESTDIR=%{buildroot}
 %{_fixperms} %{buildroot}/*
-rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm*
+rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm || :
 
 %check
 make test
