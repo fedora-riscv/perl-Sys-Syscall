@@ -1,16 +1,22 @@
 Name:           perl-Sys-Syscall
 Version:        0.25
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
+Group:          Development/Libraries
 URL:            http://search.cpan.org/dist/Sys-Syscall/
 Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
+# ghpr#6, rhbz#1288335
+Patch0:         Sys-Syscall-0.25-Add-ppc64le-support.patch
+Patch1:         Sys-Syscall-0.25-Add-s390-x-support.patch
+Patch2:         Sys-Syscall-0.25-Add-aarch64-support.patch
 BuildArch:      noarch
 # Build
 BuildRequires:  coreutils
+BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl
-BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
+BuildRequires:  perl(ExtUtils::MakeMaker)
 # Runtime
 BuildRequires:  perl(constant)
 BuildRequires:  perl(Exporter)
@@ -30,13 +36,17 @@ syscalls/OSes planned for future.
 
 %prep
 %setup -q -n Sys-Syscall-%{version}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1
+perl Makefile.PL INSTALLDIRS=vendor
 make %{?_smp_mflags}
 
 %install
 make pure_install DESTDIR=%{buildroot}
+find %{buildroot} -type f -name .packlist -delete
 %{_fixperms} %{buildroot}/*
 rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm || :
 
@@ -49,6 +59,10 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Tue Dec 08 2015 Petr Šabata <contyk@redhat.com> - 0.25-10
+- Add support for ppc64le, s390x and aarch64 (#1288335)
+- Restore EPEL compatibility
+
 * Wed Sep 02 2015 Petr Šabata <contyk@redhat.com> - 0.25-9
 - Don't remove nonexistent files
 - Fix the dep list
