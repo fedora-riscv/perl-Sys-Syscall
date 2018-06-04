@@ -4,8 +4,8 @@ Release:        16%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 Group:          Development/Libraries
-URL:            http://search.cpan.org/dist/Sys-Syscall/
-Source0:        http://www.cpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
+URL:            https://metacpan.org/release/Sys-Syscall
+Source0:        https://cpan.metacpan.org/modules/by-module/Sys/Sys-Syscall-%{version}.tar.gz
 # ghpr#6, rhbz#1288335
 Patch0:         Sys-Syscall-0.25-Add-ppc64le-support.patch
 Patch1:         Sys-Syscall-0.25-Add-s390-x-support.patch
