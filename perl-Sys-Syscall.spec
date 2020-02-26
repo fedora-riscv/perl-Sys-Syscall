@@ -12,11 +12,10 @@ Patch2:         Sys-Syscall-0.25-Add-aarch64-support.patch
 BuildArch:      noarch
 # Build
 BuildRequires:  coreutils
-BuildRequires:  findutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
-BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(ExtUtils::MakeMaker) >= 6.76
 # Runtime
 BuildRequires:  perl(constant)
 BuildRequires:  perl(Exporter)
@@ -41,12 +40,11 @@ syscalls/OSes planned for future.
 %patch2 -p1
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
+%{make_build}
 
 %install
-make pure_install DESTDIR=%{buildroot}
-find %{buildroot} -type f -name .packlist -delete
+%{make_install}
 %{_fixperms} %{buildroot}/*
 rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm || :
 
