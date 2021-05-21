@@ -1,6 +1,6 @@
 Name:           perl-Sys-Syscall
 Version:        0.25
-Release:        25%{?dist}
+Release:        26%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 URL:            https://metacpan.org/release/Sys-Syscall
@@ -57,6 +57,9 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 0.25-26
+- Perl 5.34 rebuild
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.25-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
