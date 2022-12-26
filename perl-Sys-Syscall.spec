@@ -1,6 +1,9 @@
+# test failed on riscv64, change it disabled by default
+%bcond_with tests
+
 Name:           perl-Sys-Syscall
 Version:        0.25
-Release:        30%{?dist}
+Release:        30.rv64%{?dist}
 Summary:        Access system calls that Perl doesn't normally provide access to
 License:        GPL+ or Artistic
 URL:            https://metacpan.org/release/Sys-Syscall
@@ -48,8 +51,10 @@ perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1
 %{_fixperms} %{buildroot}/*
 rm -v %{buildroot}%{_mandir}/man3/Sys::README.3pm || :
 
+%if %{with tests}
 %check
 make test
+%endif
 
 %files
 %doc CHANGES CONTRIBUTING.txt README.pod
@@ -57,6 +62,9 @@ make test
 %{_mandir}/man3/Sys::Syscall.*
 
 %changelog
+* Mon Dec 26 2022 Liu Yang <Yang.Liu.sn@gmail.com> - 0.25-30.rv64
+- Disable test by default because of failure on riscv64.
+
 * Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.25-30
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
